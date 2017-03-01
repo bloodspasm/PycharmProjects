@@ -2,6 +2,7 @@
 import tensorflow as tf
 
 
+# 输入值 输入单元点 输出单元点 激励函数
 def add_layer(inputs, in_size, out_size, activation_function=None):
     # add one more layer and return the output of this layer
     # 区别：大框架，定义层 layer，里面有 小部件
