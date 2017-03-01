@@ -24,13 +24,16 @@ def add_layer(inputs, in_size, out_size, activation_function=None):
 
 
 # Make up some real data
-# 间隔采样 numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)[source]
+
+# 间隔采样 numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)[source] 维度
+# 1 个神经元
 x_data = np.linspace(-1, 1, 300)[:, np.newaxis]  # 矩阵变成1 列的
 print (x_data)
 print ("####################")
+
 # 此概率分布的均值（对应着整个分布的中心centre）
 # 此概率分布的标准差（对应于分布的宽度，scale越大越矮胖，scale越小，越瘦高）
-# 输出的shape，默认为None，只输出一个值
+# 输出的shape(格式)，默认为None，只输出一个值
 noise=np.random.normal(0, 0.05, x_data.shape)
 print (noise)
 print ("####################")
@@ -40,13 +43,21 @@ y_data=np.square(x_data) - 0.5 + noise
 xs = tf.placeholder(tf.float32, [None, 1])
 ys = tf.placeholder(tf.float32, [None, 1])
 # add hidden layer
+# 隐藏层
+# add_layer(输入, 输入神经元, 输出神经元, 激励函数)
 l1 = add_layer(xs, 1, 10, activation_function=tf.nn.relu)
 # add output layer
+# 输出层
 prediction = add_layer(l1, 10, 1, activation_function=None)
 
 # the error between prediction and real data
+# 误差 reduce_mean 平均值   reduce_sum求和 tf.square 平方
+# reduction_indices的默认值时None，即把input_tensor降到 0维，也就是一个数。
+# 对于2维input_tensor，reduction_indices=0时，按列；reduction_indices=1时，按行。
 loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys - prediction),
                                     reduction_indices=[1]))
+
+# 练习
 train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 
 # important step
